@@ -12,6 +12,7 @@ UOpenDoor::UOpenDoor()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	
 }
 
 
@@ -30,32 +31,19 @@ void UOpenDoor::BeginPlay()
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (MassOfActors()> _massToOpen)
+		
+	if (GetWorld()->GetTimeSeconds() - _doorLastOpened > _doorCloseDelay)
 	{
-		OpenDoor(DeltaTime);
-		_doorLastOpened = GetWorld()->GetTimeSeconds();
-
+		CloseDoor(DeltaTime);
 	}
-	else
-	{
-		if (GetWorld()->GetTimeSeconds() - _doorLastOpened > _doorCloseDelay) 
-		{
-			CloseDoor(DeltaTime);
-		}
-	}
-	
-
-	//FRotator OpenDoor(0.f, targetYaw, 0.f);
-	//OpenDoor.Yaw = FMath::FInterpConstantTo(currentYaw, targetYaw, DeltaTime, 30);
-	//GetOwner()->SetActorRotation(OpenDoor);
-	// ...
 }
+
 void UOpenDoor::OpenDoor(float DeltaTime) {
 	_currentYaw = FMath::Lerp(_currentYaw, _targetYaw, DeltaTime * _doorOpenSpeed);
 	FRotator _doorRotation = GetOwner()->GetActorRotation();
 	_doorRotation.Yaw = _currentYaw;
 	GetOwner()->SetActorRotation(_doorRotation);
+
 }
 void UOpenDoor::CloseDoor(float DeltaTime) {
 	_currentYaw = FMath::Lerp(_currentYaw, _initialYaw, DeltaTime * _doorCloseSpeed);
@@ -63,26 +51,3 @@ void UOpenDoor::CloseDoor(float DeltaTime) {
 	_doorRotation.Yaw = _currentYaw;
 	GetOwner()->SetActorRotation(_doorRotation);
 }
-float UOpenDoor::MassOfActors() const 
-{
-	float _mass = 0.f;
-
-	//Find all overlaping actors
-	TArray<AActor*> _overlapingActors;
-	if (!_pressurePlate)
-		return _mass;
-	_pressurePlate->GetOverlappingActors(_overlapingActors);
-
-	//Add up their masses
-	for (AActor* _actor: _overlapingActors)
-	{
-		_mass += _actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
-	}
-	return _mass;
-}
-
-float UOpenDoor::RotationOfActors() const
-{
-	return 0.0f;
-}
-

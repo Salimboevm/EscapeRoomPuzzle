@@ -20,11 +20,18 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	_bGravity = false;
+
 	FindPhysicsComponent();
 
 	FindInputHandler();
 
-	
+	for (TObjectIterator<URotationOpenDoor> _itr; _itr; ++_itr)
+	{
+		if (_itr->IsA(URotationOpenDoor::StaticClass())) {
+			_openDoor = *_itr;
+		}
+	}
 }
 void UGrabber::FindPhysicsComponent()
 {
@@ -41,19 +48,22 @@ void UGrabber::FindInputHandler() {
 	{
 		_inputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		_inputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
+		
 	}
 }
 void UGrabber::Grab()
 {
 	FHitResult _hitResult = GetFirstPhysicsBody();
-	UPrimitiveComponent* _componentToGrab = _hitResult.GetComponent();
+	_componentToGrab = _hitResult.GetComponent();
 
-	AActor* _actorHit = _hitResult.GetActor();
+	_actorHit = _hitResult.GetActor();
 
+	_bGravity = false;
 	if (_actorHit) 
 	{
 		if (!_physicsHandler)
 			return;
+		_componentToGrab->SetEnableGravity(_bGravity);
 		_physicsHandler->GrabComponentAtLocation
 		(
 			_componentToGrab, 
@@ -62,13 +72,35 @@ void UGrabber::Grab()
 		);
 	}
 }
+
+
 void UGrabber::Release()
 {
 	if (!_physicsHandler)
 		return;
+	_bGravity = true;
+	if (!_componentToGrab)
+		return;
+	if (!_openDoor)
+		return;
+	_componentToGrab->SetEnableGravity(_bGravity);
 	_physicsHandler->ReleaseComponent();
-}
 
+}
+void UGrabber::SetNumberOfDone() 
+{
+	if (_actorHit->GetActorRotation().Roll >= 70.f && _actorHit->GetActorRotation().Roll <= 120.f) 
+	{
+		_openDoor->SetCurrent();
+		printVar = _openDoor->GetCurrent();
+	}
+	else 
+	{
+		UE_LOG(LogTemp, Log, TEXT("END"));
+		printVar = _openDoor->GetCurrent();
+		return;
+	}
+}
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -80,6 +112,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	if (_physicsHandler->GrabbedComponent) 
 	{
 		_physicsHandler->SetTargetLocation(GetLineTraceEnd());
+		
 	}
 	
 }

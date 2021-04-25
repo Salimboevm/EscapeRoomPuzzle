@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "RotationOpenDoor.h"
 #include "Grabber.generated.h"
 
 
@@ -19,17 +20,30 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+		AActor* _actorHit = nullptr;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+		int printVar = 0;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-	float _reach = 185.f;
+	UPROPERTY()
+	class URotationOpenDoor* _openDoor;
+
+	float _reach = 150.f;
+
+	bool _bGravity = false;
 
 	UInputComponent* _inputComponent = nullptr;
 	UPhysicsHandleComponent* _physicsHandler = nullptr;
+	UFUNCTION(BlueprintCallable, Category = "Grab")
 	void Grab();
+	UFUNCTION(BlueprintCallable, Category = "Grab")
 	void Release();
+	UFUNCTION(BlueprintCallable, Category = "Grab")
+	void SetNumberOfDone();
 	void FindPhysicsComponent();
 	void FindInputHandler();
 
@@ -39,4 +53,5 @@ private:
 	FVector GetLineTraceEnd() const;
 	//Get player position in the World
 	FVector GetPlayerWolrdPos() const;
+	UPrimitiveComponent* _componentToGrab = nullptr;
 };

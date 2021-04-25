@@ -7,7 +7,6 @@
 #include "Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ESCAPEROOMPUZZLE_API UOpenDoor : public UActorComponent
 {
@@ -15,7 +14,7 @@ class ESCAPEROOMPUZZLE_API UOpenDoor : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
-	UOpenDoor();
+
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -25,8 +24,9 @@ protected:
 	virtual void BeginPlay() override;
 	void OpenDoor(float DeltaTime);
 	void CloseDoor(float DeltaTime);
-	float MassOfActors() const;
-	float RotationOfActors() const;
+
+	float _doorLastOpened = NULL;
+	UOpenDoor();
 
 private:
 	//door opening components
@@ -36,22 +36,10 @@ private:
 	float _currentYaw = NULL;
 
 	//open door components
-	float _doorLastOpened = NULL;
 	UPROPERTY(EditAnywhere)
 	float _doorCloseDelay = .5f;
 	UPROPERTY(EditAnywhere)
 	float _doorOpenSpeed = 1.f;
 	UPROPERTY(EditAnywhere)
 	float _doorCloseSpeed = 2.f;
-
-	//open with mass
-	UPROPERTY(EditAnywhere)
-	float _massToOpen = 30.f;
-	UPROPERTY(EditAnywhere)
-	ATriggerVolume* _pressurePlate = nullptr;
-
-	//open with rotation
-	UPROPERTY(EditAnywhere)
-	float _rotationOfActors = 0.0f;
-
 };
