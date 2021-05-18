@@ -24,6 +24,7 @@ void UFindText::BeginPlay()
 		if (_itr->IsA(ULastOpenDoor::StaticClass())) {
 			_openDoor = *_itr;
 		}
+		_hiddenWord = _openDoor->ReturnTextToOpen();
 	}
 	// ...
 }
@@ -33,7 +34,6 @@ void UFindText::OnInput(const FString input)
 	_input = input;
 	if (_input == _hiddenWord) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Working On Input"));
 		_openDoor->SetCurrentOpenDoorString(input);
 	}
 }

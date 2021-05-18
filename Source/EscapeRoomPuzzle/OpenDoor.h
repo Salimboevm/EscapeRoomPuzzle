@@ -28,6 +28,7 @@ protected:
 	float _doorLastOpened = NULL;
 	UOpenDoor();
 
+
 private:
 	//door opening components
 	UPROPERTY(EditAnywhere)

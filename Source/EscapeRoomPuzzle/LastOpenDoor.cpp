@@ -33,14 +33,14 @@ void ULastOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 
 	if (_last == true)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Current case 3 word: %s"), *_textFromUser);
-		if (!_textFromUser.Compare(_textToOpen))
+
+		if (!_textToOpen.Compare(_textFromUser))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Working"));
-			UE_LOG(LogTemp, Warning, TEXT("Working"));
 			OpenDoor(DeltaTime);
 			_doorLastOpened = GetWorld()->GetTimeSeconds();
+			_done = true;
 		}
+
 	}
 	else
 	{
@@ -50,6 +50,7 @@ void ULastOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 void ULastOpenDoor::SetCurrentOpenDoorString(const FString _currentString)
 {	
 	_textFromUser = _currentString;
-	UE_LOG(LogTemp, Warning, TEXT("Setted: %s"), *_textFromUser);
-	UE_LOG(LogTemp, Warning, TEXT("Hidden: %s"), *_textToOpen);
+}
+FString ULastOpenDoor::ReturnTextToOpen() {
+	return _textToOpen;
 }

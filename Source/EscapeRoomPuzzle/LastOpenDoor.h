@@ -19,7 +19,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void SetCurrentOpenDoorString(const FString _currentString);
-
+	FString ReturnTextToOpen();
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	bool _done = NULL;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -29,5 +31,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	FString _textFromUser;
 	UPROPERTY(EditAnywhere)
-	bool _last = NULL;
+	bool _last = NULL;	
+
 };

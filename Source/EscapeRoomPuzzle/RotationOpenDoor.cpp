@@ -30,13 +30,12 @@ void URotationOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-
-	if (_numOfBags <= _current)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Current"));
-		OpenDoor(DeltaTime);
-		_doorLastOpened = GetWorld()->GetTimeSeconds();
-	}
+		if (_numOfBags <= _current)
+		{
+			OpenDoor(DeltaTime);
+			_doorLastOpened = GetWorld()->GetTimeSeconds();
+		}
+	
 }
 float URotationOpenDoor::RotationOfActors() const
 {
