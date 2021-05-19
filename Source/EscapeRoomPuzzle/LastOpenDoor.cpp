@@ -30,15 +30,15 @@ void ULastOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-
+	//check if this door is last one
 	if (_last == true)
 	{
-
+		//check for input string with hidden word
 		if (!_textToOpen.Compare(_textFromUser))
 		{
-			OpenDoor(DeltaTime);
-			_doorLastOpened = GetWorld()->GetTimeSeconds();
-			_done = true;
+			OpenDoor(DeltaTime);//open door
+			_doorLastOpened = GetWorld()->GetTimeSeconds();//get time when door opened
+			_done = true;//game is over
 		}
 
 	}
@@ -47,10 +47,12 @@ void ULastOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 		return;
 	}
 }
+///Func to set string which gets from the user
 void ULastOpenDoor::SetCurrentOpenDoorString(const FString _currentString)
 {	
 	_textFromUser = _currentString;
 }
+///Func to get string
 FString ULastOpenDoor::ReturnTextToOpen() {
 	return _textToOpen;
 }

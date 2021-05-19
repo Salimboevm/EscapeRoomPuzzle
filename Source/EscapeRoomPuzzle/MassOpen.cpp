@@ -30,16 +30,17 @@ void UMassOpen::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
-	if (MassOfActors() > _massToOpen)
+	if (MassOfActors() > _massToOpen)//check for mass 
 	{
+		//open door 
 		OpenDoor(DeltaTime);
 		_doorLastOpened = GetWorld()->GetTimeSeconds();
 	}
 }
-
+///Func to get mass of actor
 float UMassOpen::MassOfActors() const
 {
-	float _mass = 0.f;
+	float _mass = 0.f;//mass of actor
 
 	//Find all overlaping actors
 	TArray<AActor*> _overlapingActors;

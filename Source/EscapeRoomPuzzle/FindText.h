@@ -23,13 +23,13 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	UPROPERTY()
-	class ULastOpenDoor* _openDoor;
+	class ULastOpenDoor* _openDoor;//last open door class
 private:
 	UFUNCTION(BlueprintCallable, Category = "My Input Category")
-	void OnInput(const FString input);
+	void OnInput(const FString input);//blueprint callable func
 	UFUNCTION(BlueprintCallable, Category = "My Input Category")
-	FString ReturnInput();
+	FString ReturnInput();//func to get input
 	UPROPERTY(EditAnywhere)
-		FString _hiddenWord = "grandma";
-		FString _input;
+		FString _hiddenWord = "you cannot escape from this house";//hidden word to open door
+		FString _input;//input to send
 };

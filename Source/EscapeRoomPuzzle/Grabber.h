@@ -21,7 +21,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-		AActor* _actorHit = nullptr;
+		AActor* _actorHit = nullptr;//actor hit 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		int printVar = 0;
 protected:
@@ -30,9 +30,9 @@ protected:
 
 private:
 	UPROPERTY()
-	class URotationOpenDoor* _openDoor;
+	class URotationOpenDoor* _openDoor;//open door class
 
-	float _reach = 150.f;
+	float _reach = 150.f;// max distance 
 
 	bool _bGravity = false;
 

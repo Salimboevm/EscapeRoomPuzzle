@@ -18,19 +18,19 @@ public:
 	ULastOpenDoor();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void SetCurrentOpenDoorString(const FString _currentString);
-	FString ReturnTextToOpen();
+	void SetCurrentOpenDoorString(const FString _currentString);///set user input string
+	FString ReturnTextToOpen();//get string
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-	bool _done = NULL;
+	bool _done = NULL;//is game over
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
-	const FString _textToOpen = "grandma";
+	const FString _textToOpen = "you cannot escape from this house";//hidden word
 	UPROPERTY(EditAnywhere)
-	FString _textFromUser;
+	FString _textFromUser;//user input string
 	UPROPERTY(EditAnywhere)
-	bool _last = NULL;	
+	bool _last = NULL;	//is it last door
 
 };

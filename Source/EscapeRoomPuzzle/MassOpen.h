@@ -27,7 +27,7 @@ protected:
 private:
 	//open with mass
 	UPROPERTY(EditAnywhere)
-		float _massToOpen = 30.f;
+		float _massToOpen = 30.f;//how many kg needs to open
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* _pressurePlate = nullptr;
 

@@ -18,19 +18,19 @@ public:
 	URotationOpenDoor();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	int SetCurrent();
-	int GetCurrent();
+	int SetCurrent();//increase number of rotated objects 
+	int GetCurrent();//return number of rotated objects
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	float RotationOfActors() const;
 private:
-	const int _numOfBags = 4;
+	const int _numOfBags = 4;//how many bags should be rotated
 	//open with rotation
 	UPROPERTY(EditAnywhere)
 		float _rotationOfActors = 0.0f;
 
 	UPROPERTY(EditAnywhere)
-		int _current = NULL;
+		int _current = NULL;//current number of bags rotated
 };

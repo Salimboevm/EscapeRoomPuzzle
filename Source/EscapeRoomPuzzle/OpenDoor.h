@@ -22,10 +22,10 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	void OpenDoor(float DeltaTime);
-	void CloseDoor(float DeltaTime);
+	void OpenDoor(float DeltaTime);//func to open door
+	void CloseDoor(float DeltaTime);//func to close door
 
-	float _doorLastOpened = NULL;
+	float _doorLastOpened = NULL;//time when door opened
 	UOpenDoor();
 
 
@@ -38,9 +38,9 @@ private:
 
 	//open door components
 	UPROPERTY(EditAnywhere)
-	float _doorCloseDelay = .5f;
+	float _doorCloseDelay = .5f;//closing delay
 	UPROPERTY(EditAnywhere)
-	float _doorOpenSpeed = 1.f;
+	float _doorOpenSpeed = 1.f;//opening speed
 	UPROPERTY(EditAnywhere)
-	float _doorCloseSpeed = 2.f;
+	float _doorCloseSpeed = 2.f;//closing speed
 };

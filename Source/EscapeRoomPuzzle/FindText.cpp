@@ -28,16 +28,18 @@ void UFindText::BeginPlay()
 	}
 	// ...
 }
-
+///Fuctions to get user input
+//set in blueprint
 void UFindText::OnInput(const FString input)
 {
-	_input = input;
-	if (_input == _hiddenWord) 
+	_input.Reset();//reset string
+	_input = input;//initialize sending input to given input
+	if (_input == _hiddenWord) //check for hidden word
 	{
-		_openDoor->SetCurrentOpenDoorString(input);
+		_openDoor->SetCurrentOpenDoorString(input);//send input 
 	}
 }
-
+///Func to get input
 FString UFindText::ReturnInput() {
 	return _input;
 }

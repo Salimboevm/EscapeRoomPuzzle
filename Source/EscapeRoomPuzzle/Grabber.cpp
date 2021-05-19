@@ -25,7 +25,7 @@ void UGrabber::BeginPlay()
 	FindPhysicsComponent();
 
 	FindInputHandler();
-
+	//find open door class
 	for (TObjectIterator<URotationOpenDoor> _itr; _itr; ++_itr)
 	{
 		if (_itr->IsA(URotationOpenDoor::StaticClass())) {
@@ -33,38 +33,41 @@ void UGrabber::BeginPlay()
 		}
 	}
 }
+///Func to find physics component
 void UGrabber::FindPhysicsComponent()
 {
 	//checking for physics handle
-	_physicsHandler = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (!_physicsHandler) {
+	_physicsHandler = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();//get physics handler
+	if (!_physicsHandler) {//check for it
+		//if no print it
 		UE_LOG(LogTemp, Error, TEXT("No Physics handler attached"));
 	}
 }
+///Func to get Input handler
 void UGrabber::FindInputHandler() {
 	//checking for input handler and getting it
 	_inputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 	if (_inputComponent)
 	{
-		_inputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
-		_inputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
-		
+		_inputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);//get grab 
+		_inputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);//get release
 	}
 }
+///Func to grab 
 void UGrabber::Grab()
 {
-	FHitResult _hitResult = GetFirstPhysicsBody();
-	_componentToGrab = _hitResult.GetComponent();
+	FHitResult _hitResult = GetFirstPhysicsBody();//get hit result
+	_componentToGrab = _hitResult.GetComponent();//get actor to grab
 
-	_actorHit = _hitResult.GetActor();
+	_actorHit = _hitResult.GetActor();//get raycast actor hit
 
-	_bGravity = false;
-	if (_actorHit) 
+	_bGravity = false;//turn off gravity 
+	if (_actorHit) //check for raycast actorhit
 	{
-		if (!_physicsHandler)
+		if (!_physicsHandler)//check for physisc handler
 			return;
-		_componentToGrab->SetEnableGravity(_bGravity);
-		_physicsHandler->GrabComponentAtLocation
+		_componentToGrab->SetEnableGravity(_bGravity);//disable gravity
+		_physicsHandler->GrabComponentAtLocation//grab component
 		(
 			_componentToGrab, 
 			NAME_None, 
@@ -73,7 +76,7 @@ void UGrabber::Grab()
 	}
 }
 
-
+///Func to release
 void UGrabber::Release()
 {
 	if (!_physicsHandler)
@@ -83,21 +86,30 @@ void UGrabber::Release()
 		return;
 	if (!_openDoor)
 		return;
-	_componentToGrab->SetEnableGravity(_bGravity);
-	_physicsHandler->ReleaseComponent();
+	_componentToGrab->SetEnableGravity(_bGravity);//turn on gravity
+	_physicsHandler->ReleaseComponent();//release component
 
 }
+///Func to set number correctly rotated objects
 void UGrabber::SetNumberOfDone() 
 {
-	if (_actorHit->GetActorRotation().Roll >= 70.f && _actorHit->GetActorRotation().Roll <= 120.f) 
+	if (!_physicsHandler)
+		return;
+	if (!_componentToGrab)
+		return;
+	if (!_openDoor)
+		return;
+	if (!_actorHit)
+		return;
+	if (_actorHit->GetActorRotation().Roll >= 70.f && _actorHit->GetActorRotation().Roll <= 120.f) //check for actor rotation
 	{
-		_openDoor->SetCurrent();
-		printVar = _openDoor->GetCurrent();
+		_openDoor->SetCurrent();//increase number
+		printVar = _openDoor->GetCurrent();//get number
 	}
 	else 
 	{
 		UE_LOG(LogTemp, Log, TEXT("END"));
-		printVar = _openDoor->GetCurrent();
+		printVar = _openDoor->GetCurrent();//get current number
 		return;
 	}
 }
@@ -111,30 +123,30 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		return;
 	if (_physicsHandler->GrabbedComponent) 
 	{
-		_physicsHandler->SetTargetLocation(GetLineTraceEnd());
+		_physicsHandler->SetTargetLocation(GetLineTraceEnd());//move it 
 		
 	}
 	
 }
-
+//Func to get actors physics component
 FHitResult UGrabber::GetFirstPhysicsBody() const
 {
-	GetLineTraceEnd();
+	GetLineTraceEnd();//where line trace is ending
 
-	FHitResult _hit;
+	FHitResult _hit;//hit actor
 	//Ray-cast out to a certain distance(reach)
 	FCollisionQueryParams _traceParams(FName(""), false, GetOwner());
 
-	GetWorld()->LineTraceSingleByObjectType(
+	GetWorld()->LineTraceSingleByObjectType(//get actor by object type
 		_hit,
 		GetPlayerWolrdPos(),
 		GetLineTraceEnd(),
 		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
 		_traceParams
 	);
-	return _hit;
+	return _hit;//return actor
 }
-
+///Func to get player`s world position
 FVector UGrabber::GetPlayerWolrdPos() const
 {
 	//Get PLyaer`s view point
@@ -147,7 +159,7 @@ FVector UGrabber::GetPlayerWolrdPos() const
 	);
 	return _playerVievPointLocation;
 }
-
+///Func to get end of line trace
 FVector UGrabber::GetLineTraceEnd() const
 {
 	//Get PLyaer`s view point
